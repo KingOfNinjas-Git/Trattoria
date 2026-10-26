@@ -8,7 +8,7 @@
 
     <ul class="mt-6 space-y-3 text-sm">
         @foreach ($credits as $slug => $c)
-            <li class="rounded-lg bg-white p-3 ring-1 ring-ink/5">
+            <li class="break-words rounded-lg bg-white p-3 ring-1 ring-ink/5">
                 <p class="font-bold">{{ str_replace('File:', '', $c['title']) }}</p>
                 <p class="text-ink/70">{{ $c['artist'] ?: 'Unknown author' }} · {{ $c['license'] }}</p>
                 <a class="text-basil-dark underline" target="_blank" rel="noopener"
