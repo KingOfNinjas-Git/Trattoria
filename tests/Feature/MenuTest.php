@@ -57,7 +57,7 @@ class MenuTest extends TestCase
     public function test_dish_photos_and_allergens_are_shown(): void
     {
         $this->get($this->menuUrl())
-            ->assertSee('images/menu/margherita.jpg', false)
+            ->assertSee('images/menu/margherita.webp', false)
             ->assertSee('Contains: Gluten, Dairy');
     }
 

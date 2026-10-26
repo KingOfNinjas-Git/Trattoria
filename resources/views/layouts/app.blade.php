@@ -28,7 +28,8 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet"></noscript>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen font-sans antialiased">
@@ -36,7 +37,7 @@
     @if (config('trattoria.demo'))
         <div class="bg-ink px-4 py-2 text-center text-xs font-bold text-white/90" role="note">
             Portfolio demo by <a href="{{ config('trattoria.portfolio_url') }}" class="underline">Francisco</a>: orders are cleared regularly.
-            @guest <a href="{{ route('demo.kitchen') }}" class="ml-2 rounded-full bg-white/15 px-3 py-1 hover:bg-white/25">See the kitchen board</a> @endguest
+            @guest <a href="{{ route('demo.kitchen') }}" class="ml-2 rounded-full bg-white/15 px-3 py-1 underline hover:bg-white/25">See the kitchen board</a> @endguest
         </div>
     @endif
     <main id="main-content">
