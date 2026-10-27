@@ -81,9 +81,7 @@
                     <x-glyph name="moon" class="h-4 w-4 dark:hidden"/>
                     <x-glyph name="sun" class="hidden h-4 w-4 dark:block"/>
                 </button>
-                @unless (\App\Support\DemoMode::isDemoUser(auth()->user()))
                 <a href="/admin" class="rounded-full bg-white px-4 py-2 text-sm font-bold text-ink/70 shadow-sm dark:bg-neutral-800 dark:text-neutral-300">Admin</a>
-                @endunless
             </div>
         </div>
 

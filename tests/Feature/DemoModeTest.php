@@ -22,13 +22,26 @@ class DemoModeTest extends TestCase
         $this->assertTrue((new User)->canAccessPanel(\Filament\Facades\Filament::getPanel('admin')));
     }
 
-    public function test_demo_user_cannot_open_the_admin_panel_but_staff_can(): void
+    public function test_the_demo_staff_account_can_open_the_kitchen_and_the_admin_panel(): void
     {
         config(['trattoria.demo' => true]);
         $panel = \Filament\Facades\Filament::getPanel('admin');
+        $staff = DemoMode::staffUser();
 
-        $this->assertFalse(DemoMode::staffUser()->canAccessPanel($panel));
-        $this->assertTrue(User::forceCreate(['name' => 'Owner', 'email' => 'owner@example.com', 'password' => 'x'])->canAccessPanel($panel));
+        $this->assertTrue($staff->canAccessPanel($panel));
+        $this->actingAs($staff)->get('/kitchen')->assertOk();
+        $this->actingAs($staff)->get('/admin')->assertOk();
+    }
+
+    public function test_every_page_explains_that_the_staff_areas_are_open_only_because_it_is_a_demo(): void
+    {
+        config(['trattoria.demo' => true]);
+        $table = DiningTable::create(['number' => 1, 'name' => 'Table 1', 'seats' => 2]);
+        $staff = DemoMode::staffUser();
+
+        $this->get(route('table.menu', $table->token))->assertSee('Kitchen board')->assertSee('Admin panel')->assertSee('secured behind a login');
+        $this->actingAs($staff)->get('/kitchen')->assertSee('secured behind a login');
+        $this->actingAs($staff)->get('/admin')->assertSee('Admin panel')->assertSee('secured behind a login');
     }
 
     public function test_the_notice_shows_and_old_orders_are_cleared_once_an_hour(): void

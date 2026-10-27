@@ -35,10 +35,7 @@
 <body class="min-h-screen font-sans antialiased">
     <div class="tricolore"></div>
     @if (config('trattoria.demo'))
-        <div class="bg-ink px-4 py-2 text-center text-xs font-bold text-white/90" role="note">
-            Portfolio demo by <a href="{{ config('trattoria.portfolio_url') }}" class="underline">Francisco</a>: orders are cleared regularly.
-            @guest <a href="{{ route('demo.kitchen') }}" class="ml-2 rounded-full bg-white/15 px-3 py-1 underline hover:bg-white/25">See the kitchen board</a> @endguest
-        </div>
+        <x-demo-bar/>
     @endif
     <main id="main-content">
         {{ $slot }}

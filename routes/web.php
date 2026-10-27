@@ -8,6 +8,7 @@ use App\Livewire\OrderStatus;
 use App\Livewire\TableBill;
 use App\Livewire\TableMenu;
 use App\Models\DiningTable;
+use App\Support\DemoMode;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', fn () => redirect()->route('filament.admin.auth.login'))->name('login');
@@ -44,12 +45,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/qr/{table}', [QrController::class, 'show'])->name('qr.table');
 });
 
-// Portfolio demo only: opens the kitchen board as a staff member without a password. The demo account
-// cannot open the admin panel (see User::canAccessPanel).
+// Portfolio demo only: the kitchen board and the admin panel open as a staff member without a password,
+// so visitors can try the full experience. A real restaurant leaves demo mode off and keeps them behind a login.
 if (config('trattoria.demo')) {
     Route::get('/demo/kitchen', function () {
-        auth()->login(\App\Support\DemoMode::staffUser());
+        auth()->login(DemoMode::staffUser());
 
         return redirect()->route('kitchen');
     })->name('demo.kitchen');
+
+    Route::get('/demo/admin', function () {
+        auth()->login(DemoMode::staffUser());
+
+        return redirect('/admin');
+    })->name('demo.admin');
 }

@@ -23,7 +23,7 @@ class DemoMode
         return $user !== null && self::enabled() && $user->email === config('trattoria.demo_email');
     }
 
-    /** The staff account behind the "Try the kitchen board" button: no known password, no admin panel. */
+    /** The staff account behind the demo's Kitchen board and Admin panel buttons: no known password. */
     public static function staffUser(): User
     {
         return User::firstOrCreate(

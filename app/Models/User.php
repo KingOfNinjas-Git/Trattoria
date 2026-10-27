@@ -19,10 +19,10 @@ class User extends Authenticatable implements FilamentUser
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /** Every account is restaurant staff; there is no customer login. */
+    /** Every account is restaurant staff (including the open demo staff account); there is no customer login. */
     public function canAccessPanel(Panel $panel): bool
     {
-        return ! \App\Support\DemoMode::isDemoUser($this);
+        return true;
     }
 
     /**
