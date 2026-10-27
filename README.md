@@ -4,6 +4,8 @@ A QR-code ordering system for an Italian restaurant. Guests scan the code on the
 
 Built with **Laravel 13, Livewire 4, Filament 5, Tailwind CSS 4, Laravel Reverb** and SQLite.
 
+![The demo welcome page: a QR code for phones and a button to open the menu on a computer](docs/screenshots/00-demo-welcome.png)
+
 | Menu | Dish options | Order sent |
 |---|---|---|
 | ![Menu](docs/screenshots/02-menu-pizzas.png) | ![Dish options](docs/screenshots/04-dish-options.png) | ![Order sent](docs/screenshots/06-order-sent.png) |
@@ -151,6 +153,6 @@ The live demo (https://trattoria.franciscowebdev.com) runs on shared hosting, wh
 | `POLL_KITCHEN`, `POLL_GUEST`, `POLL_BILL` | `5`, `10`, `15` | Polling interval in seconds (defaults 20, 20, 30). |
 | `BROADCAST_CONNECTION` | `null` | No broadcasting attempts. |
 | `QUEUE_CONNECTION` | `sync` | No queue worker needed. |
-| `DEMO_MODE` | `true` | Shows a "Portfolio demo" strip, adds `/demo/kitchen` (one-click staff view that cannot open the admin panel) and removes orders older than `DEMO_KEEP_HOURS` (default 6), at most once an hour. |
+| `DEMO_MODE` | `true` | Public portfolio demo. `/` becomes a welcome page with the table's QR code **and** a button that opens the same menu on the current device (for people on a computer or who cannot scan). A strip on every page links to the kitchen board and the admin panel, which open without a password (`/demo/kitchen`, `/demo/admin`) with a note that a real site would secure them. Deleting, editing and creating menu items, categories and tables is turned off (the buttons open a box that explains why). Search engines are asked not to index the demo (`X-Robots-Tag: noindex`). Orders older than `DEMO_KEEP_HOURS` (default 6) are removed, at most once an hour. |
 
 Deploying: the server runs PHP 8.3, so `composer.json` pins `config.platform.php` to 8.3.36 (keep it when updating packages). The app lives outside the web folder (`~/trattoria-app`) and only the contents of `public/` sit in the subdomain folder, with `index.php` pointing at the app and calling `$app->usePublicPath(__DIR__)`. Seed a fresh database with `php artisan migrate --seed --force`, then change the admin email and password.

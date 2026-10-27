@@ -9,10 +9,12 @@ use App\Models\MenuItem;
 use App\Models\Order;
 use App\Models\User;
 use App\Support\DemoMode;
+use Database\Seeders\DatabaseSeeder;
 use Filament\Actions\DeleteAction;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class DemoModeTest extends TestCase
@@ -24,13 +26,13 @@ class DemoModeTest extends TestCase
         $table = DiningTable::create(['number' => 1, 'name' => 'Table 1', 'seats' => 2]);
 
         $this->get(route('table.menu', $table->token))->assertOk()->assertDontSee('Portfolio demo');
-        $this->assertTrue((new User)->canAccessPanel(\Filament\Facades\Filament::getPanel('admin')));
+        $this->assertTrue((new User)->canAccessPanel(Filament::getPanel('admin')));
     }
 
     public function test_the_demo_staff_account_can_open_the_kitchen_and_the_admin_panel(): void
     {
         config(['trattoria.demo' => true]);
-        $panel = \Filament\Facades\Filament::getPanel('admin');
+        $panel = Filament::getPanel('admin');
         $staff = DemoMode::staffUser();
 
         $this->assertTrue($staff->canAccessPanel($panel));
@@ -40,10 +42,10 @@ class DemoModeTest extends TestCase
 
     public function test_nothing_can_be_deleted_in_the_demo_but_staff_can_delete_on_a_real_site(): void
     {
-        $this->seed(\Database\Seeders\DatabaseSeeder::class);
+        $this->seed(DatabaseSeeder::class);
         $item = MenuItem::first();
         $this->actingAs(User::first());
-        \Filament\Facades\Filament::setCurrentPanel('admin');
+        Filament::setCurrentPanel('admin');
 
         config(['trattoria.demo' => true]);
         $page = Livewire::test(EditMenuItem::class, ['record' => $item->getRouteKey()])->mountAction(DeleteAction::class);
@@ -59,12 +61,12 @@ class DemoModeTest extends TestCase
 
     public function test_nothing_can_be_edited_or_created_in_the_demo_but_staff_can_on_a_real_site(): void
     {
-        $this->seed(\Database\Seeders\DatabaseSeeder::class);
+        $this->seed(DatabaseSeeder::class);
         $item = MenuItem::first();
         $name = $item->name;
         $count = MenuItem::count();
         $this->actingAs(User::first());
-        \Filament\Facades\Filament::setCurrentPanel('admin');
+        Filament::setCurrentPanel('admin');
 
         config(['trattoria.demo' => true]);
         $edit = Livewire::test(EditMenuItem::class, ['record' => $item->getRouteKey()])

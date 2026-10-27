@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\DiningTables\Pages;
 
+use App\Filament\Concerns\DemoReadOnlyEdit;
 use App\Filament\Resources\DiningTables\DiningTableResource;
 use Filament\Actions\DeleteAction;
-use App\Filament\Concerns\DemoReadOnlyEdit;
 use Filament\Resources\Pages\EditRecord;
 
 class EditDiningTable extends EditRecord
