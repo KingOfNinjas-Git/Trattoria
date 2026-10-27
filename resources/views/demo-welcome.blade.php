@@ -22,11 +22,11 @@
 
         <section class="flex flex-col items-center justify-center rounded-3xl bg-basil p-6 text-center text-white shadow-sm" aria-labelledby="here-title">
             <h2 id="here-title" class="font-display text-2xl font-bold">{{ __('On a computer, or cannot scan?') }}</h2>
-            <p class="mt-2 max-w-xs text-white/90">{{ __('No problem. Open the very same menu right here and try everything.') }}</p>
+            <p class="mt-2 max-w-xs text-white">{{ __('No problem. Open the very same menu right here and try everything.') }}</p>
             <a href="{{ $table->url() }}" class="mt-6 inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-lg font-bold text-basil-dark shadow-md transition hover:bg-cream focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-white">
                 {{ __('Open the menu on this device') }}
             </a>
-            <p class="mt-4 text-sm text-white/85">{{ __('Same experience, nothing missing.') }}</p>
+            <p class="mt-4 text-sm text-white">{{ __('Same experience, nothing missing.') }}</p>
         </section>
     </div>
 
