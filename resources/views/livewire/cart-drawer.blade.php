@@ -19,7 +19,7 @@
                         <ul class="divide-y divide-ink/10">
                             @foreach ($this->lines as $line)
                                 <li class="flex items-center gap-3 py-3" wire:key="line-{{ $line->id }}">
-                                    <x-dish-photo :item="$line->menuItem" class="h-12 w-12 shrink-0 rounded-lg"/>
+                                    <x-dish-photo :item="$line->menuItem" :thumb="true" class="h-12 w-12 shrink-0 rounded-lg"/>
                                     <div class="min-w-0 flex-1">
                                         <p class="font-bold leading-tight">{{ $line->menuItem->name }}</p>
                                         @if ($line->optionsText())<p class="text-xs text-ink/70">{{ $line->optionsText() }}</p>@endif

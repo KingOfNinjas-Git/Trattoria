@@ -1,8 +1,9 @@
-@props(['item', 'eager' => false])
-{{-- Dish photo with a shimmer behind it while it loads; dishes without a photo get an illustrated plate. --}}
+@props(['item', 'eager' => false, 'thumb' => false])
+{{-- Dish photo with a shimmer behind it while it loads; dishes without a photo get an illustrated plate.
+     `thumb` uses the small copy of the photo (lists and the cart); the dish popup shows the full picture. --}}
 @if ($item->image_url)
     <div {{ $attributes->merge(['class' => 'shimmer relative overflow-hidden']) }}>
-        <img src="{{ $item->image_url }}" alt="{{ $item->name }}" @if (! $eager) loading="lazy" @endif
+        <img src="{{ $thumb ? $item->thumb_url : $item->image_url }}" alt="{{ $item->name }}" @if (! $eager) loading="lazy" @endif
              class="h-full w-full object-cover">
     </div>
 @else

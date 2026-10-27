@@ -46,6 +46,18 @@ class MenuItem extends Model
         return $this->image ? asset('images/menu/'.$this->image) : null;
     }
 
+    /** A small copy of the photo for lists and the cart (falls back to the full picture when there is none). */
+    public function getThumbUrlAttribute(): ?string
+    {
+        if (! $this->image) {
+            return null;
+        }
+
+        $thumb = preg_replace('/\.webp$/', '-sm.webp', $this->image);
+
+        return is_file(public_path('images/menu/'.$thumb)) ? asset('images/menu/'.$thumb) : $this->image_url;
+    }
+
     public function getPriceAttribute(): string
     {
         return number_format($this->price_cents / 100, 2, ',', '.');

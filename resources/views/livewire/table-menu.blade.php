@@ -227,10 +227,10 @@
                     @foreach ($category->items as $item)
                         @php $count = $counts[$item->id] ?? 0; $orderable = $item->is_available && $open; @endphp
                         <li wire:key="item-{{ $item->id }}" x-show="visible({{ $item->id }})"
-                            class="flex gap-3 rounded-2xl bg-white p-3 min-[380px]:gap-4 shadow-sm ring-1 ring-ink/5 {{ $orderable ? '' : 'opacity-60' }}">
-                            {{-- Photo --}}
-                            <button type="button" x-on:click="$dispatch('open-dish', { id: {{ $item->id }} })" class="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl min-[380px]:h-28 min-[380px]:w-28 sm:h-32 sm:w-32" aria-label="{{ __('View details') }}: {{ $item->name }}">
-                                <x-dish-photo :item="$item" class="h-full w-full"/>
+                            class="flex gap-3 rounded-2xl bg-white p-3 min-[380px]:gap-4 shadow-sm ring-1 ring-ink/5">
+                            {{-- Photo (greyed out, never faded: faded text would be too hard to read) --}}
+                            <button type="button" x-on:click="$dispatch('open-dish', { id: {{ $item->id }} })" class="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl min-[380px]:h-28 min-[380px]:w-28 sm:h-32 sm:w-32" aria-label="{{ __('View details') }}: {{ $item->name }}{{ $orderable ? '' : ' ('.($item->is_available ? __('Not served right now') : __('Sold out')).')' }}">
+                                <x-dish-photo :item="$item" :thumb="true" class="h-full w-full {{ $orderable ? '' : 'grayscale' }}"/>
                                 @if (! $orderable)
                                     <span class="absolute inset-0 flex items-center justify-center bg-black/55 px-1 text-center text-xs font-bold uppercase text-white">{{ $item->is_available ? __('Not served right now') : __('Sold out') }}</span>
                                 @endif

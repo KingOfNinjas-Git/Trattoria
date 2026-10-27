@@ -84,6 +84,27 @@ class DemoModeTest extends TestCase
         $this->assertSame('Renamed dish', $item->fresh()->name);
     }
 
+    public function test_the_demo_opens_on_a_welcome_page_with_a_qr_code_and_a_button_for_people_who_cannot_scan(): void
+    {
+        $table = DiningTable::create(['number' => 1, 'name' => 'Table 1', 'seats' => 2]);
+
+        // A real restaurant: straight to the menu.
+        $this->get('/')->assertRedirect(route('table.menu', $table->token));
+
+        config(['trattoria.demo' => true]);
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('<svg', false)
+            ->assertSee('Open the menu on this device')
+            ->assertSee('href="'.route('table.menu', $table->token).'"', false)
+            ->assertSee('/demo/kitchen')
+            ->assertSee('/demo/admin')
+            ->assertHeader('X-Robots-Tag', 'noindex');
+
+        config(['trattoria.demo' => false]);
+        $this->get(route('table.menu', $table->token))->assertHeaderMissing('X-Robots-Tag');
+    }
+
     public function test_every_page_explains_that_the_staff_areas_are_open_only_because_it_is_a_demo(): void
     {
         config(['trattoria.demo' => true]);

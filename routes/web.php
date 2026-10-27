@@ -16,9 +16,10 @@ Route::get('/login', fn () => redirect()->route('filament.admin.auth.login'))->n
 // Customer side (language-aware).
 Route::middleware(SetLocale::class)->group(function () {
     Route::get('/', function () {
-        $table = DiningTable::orderBy('number')->first();
+        $table = DiningTable::orderBy('number')->first() ?? abort(404);
 
-        return $table ? redirect()->route('table.menu', $table->token) : abort(404);
+        // The public demo opens on a welcome page (QR code, or a button for people who cannot scan).
+        return DemoMode::enabled() ? view('demo-welcome', ['table' => $table]) : redirect()->route('table.menu', $table->token);
     });
 
     Route::get('/lang/{locale}', function (string $locale) {
