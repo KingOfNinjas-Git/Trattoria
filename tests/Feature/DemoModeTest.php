@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\MenuItems\Pages\CreateMenuItem;
 use App\Filament\Resources\MenuItems\Pages\EditMenuItem;
 use App\Models\DiningTable;
 use App\Models\MenuItem;
@@ -54,6 +55,33 @@ class DemoModeTest extends TestCase
         Livewire::test(EditMenuItem::class, ['record' => $item->getRouteKey()])
             ->callAction(DeleteAction::class);
         $this->assertNull(MenuItem::find($item->id));
+    }
+
+    public function test_nothing_can_be_edited_or_created_in_the_demo_but_staff_can_on_a_real_site(): void
+    {
+        $this->seed(\Database\Seeders\DatabaseSeeder::class);
+        $item = MenuItem::first();
+        $name = $item->name;
+        $count = MenuItem::count();
+        $this->actingAs(User::first());
+        \Filament\Facades\Filament::setCurrentPanel('admin');
+
+        config(['trattoria.demo' => true]);
+        $edit = Livewire::test(EditMenuItem::class, ['record' => $item->getRouteKey()])
+            ->fillForm(['name' => 'Hacked dish'])
+            ->call('save');
+        $this->assertSame('Saving is turned off in the live demo', $edit->instance()->getMountedAction()->getModalHeading());
+        $this->assertSame($name, $item->fresh()->name);
+
+        $create = Livewire::test(CreateMenuItem::class)
+            ->fillForm(['category_id' => $item->category_id, 'name' => 'New dish', 'price_cents' => 900])
+            ->call('create');
+        $this->assertSame('Saving is turned off in the live demo', $create->instance()->getMountedAction()->getModalHeading());
+        $this->assertSame($count, MenuItem::count());
+
+        config(['trattoria.demo' => false]);
+        Livewire::test(EditMenuItem::class, ['record' => $item->getRouteKey()])->fillForm(['name' => 'Renamed dish'])->call('save');
+        $this->assertSame('Renamed dish', $item->fresh()->name);
     }
 
     public function test_every_page_explains_that_the_staff_areas_are_open_only_because_it_is_a_demo(): void
