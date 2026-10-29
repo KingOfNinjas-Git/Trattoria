@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderItem extends Model
 {
-    protected $fillable = ['order_id', 'menu_item_id', 'name', 'price_cents', 'quantity', 'options_text', 'is_ready'];
+    protected $fillable = ['order_id', 'menu_item_id', 'name', 'price_cents', 'quantity', 'options_text', 'is_ready', 'payment_id'];
 
     protected $casts = ['is_ready' => 'boolean'];
+
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class);
+    }
 
     public function order(): BelongsTo
     {

@@ -104,6 +104,13 @@ php artisan demo:live --auto-kitchen # simulated guests ordering and a simulated
 ```
 Open `/kitchen` in one window and watch it move on its own. `demo:live` runs until you stop it, so stop it with Ctrl+C in the same terminal; on Windows, closing the terminal tab is the safest way to be sure it ends.
 
+### Paying from the phone (demo gateway)
+On the bill page a guest can tap **Pay now** and pay everything, an **equal share** (for N people; each share is rounded up and the last person only pays what is left), or **only the dishes they tick**, with an optional tip. The payments appear on the bill with a receipt number, and staff see them in the admin under *Payments*.
+
+This is a **demonstration gateway**: it only accepts test cards (`4242 4242 4242 4242` works, `4000 0000 0000 0002` is declined, `4000 0000 0000 9995` has no funds), never charges anything and keeps only the card's last four digits. A real number is refused before anything is stored. It is on automatically in demo mode (`PAYMENTS=demo`) and off otherwise (`PAYMENTS=off`: payment is made at the table, as before).
+
+To take real payments, replace `Payments::charge()` in `app/Support/Payments.php` with a call to a payment provider (for example Stripe's card form, so card numbers never reach this server) and keep the rest: the bill, shares, dish-by-dish payments and receipts all work from the amounts.
+
 ## Tests
 
 ```bash

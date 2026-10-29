@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\ServiceRequest;
 use App\Models\TableSession;
 use App\Models\User;
@@ -41,6 +42,7 @@ class DemoMode
 
         $before = now()->subHours(config('trattoria.demo_keep_hours'));
 
+        Payment::where('created_at', '<', $before)->delete();
         Order::where('created_at', '<', $before)->delete();          // its dishes go with it
         ServiceRequest::where('created_at', '<', $before)->delete();
         CartItem::where('created_at', '<', $before)->delete();

@@ -58,6 +58,11 @@ class TableSession extends Model
         return $this->hasMany(ServiceRequest::class);
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function touchActivity(): void
     {
         $this->forceFill(['last_activity_at' => now()])->save();
